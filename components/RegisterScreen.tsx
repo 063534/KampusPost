@@ -1,23 +1,20 @@
-// components/LoginScreen.tsx
+// components/RegisterScreen.tsx
 import React, { useState } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Button, StyleSheet, Alert } from 'react-native';
 import CustomInput from './CustomInput';
 
-const LoginScreen = () => {
-  const navigation = useNavigation<any>();
-
+const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const onLoginPress = () => {
-    console.log('Login values:', { email, password });
-    // Şimdilik sadece HomeScreen'e yönlendiriyoruz
-    navigation.navigate('Home');
-  };
+  const [passwordAgain, setPasswordAgain] = useState('');
 
   const onRegisterPress = () => {
-    navigation.navigate('Register');
+    if (password !== passwordAgain) {
+      Alert.alert('Hata', 'Şifreler uyuşmuyor!');
+      return;
+    }
+
+    console.log('Kayıt başarılı', { email, password });
   };
 
   return (
@@ -33,8 +30,13 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
+      <CustomInput
+        placeholder="Şifre Tekrar"
+        value={passwordAgain}
+        onChangeText={setPasswordAgain}
+        secureTextEntry
+      />
 
-      <Button title="Giriş Yap" onPress={onLoginPress} />
       <Button title="Kayıt Ol" onPress={onRegisterPress} />
     </View>
   );
@@ -48,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
